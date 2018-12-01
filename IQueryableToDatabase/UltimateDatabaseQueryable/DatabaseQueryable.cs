@@ -11,7 +11,7 @@ namespace UltimateDatabaseQueryable
     {
         public DatabaseQueryable()
         {
-            Expression = Expression.Constant(this);
+            Expression = Expression.Constant(this); 
             Provider = new DatabaseQueryProvider();
         }
 

@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace IQueryableToDatabase
+namespace Tests
 {
     class Program
     {
         static void Main(string[] args)
         {
+            
         }
     }
 }
