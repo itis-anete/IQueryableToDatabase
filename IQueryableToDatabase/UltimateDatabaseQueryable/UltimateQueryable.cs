@@ -3,19 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace UltimateDatabaseQueryable
 {
-    public class DatabaseQueryable<T> : IQueryable<T>
+    public class UltimateQueryable<T> : IQueryable<T>
     {
-        public DatabaseQueryable()
+        public UltimateQueryable(QueryProvider provider)
         {
             Expression = Expression.Constant(this); 
-            Provider = new DatabaseQueryProvider();
+            Provider = provider;
         }
 
-        public DatabaseQueryable(Expression expression, IQueryProvider provider)
+        public UltimateQueryable(Expression expression, QueryProvider provider)
         {
             Expression = expression;
             Provider = provider;
@@ -23,11 +22,15 @@ namespace UltimateDatabaseQueryable
 
         public Type ElementType => typeof(T);
         public Expression Expression { get; }
-        public IQueryProvider Provider { get; }
+        public QueryProvider Provider { get; }
+        IQueryProvider IQueryable.Provider => Provider;
 
         public IEnumerator<T> GetEnumerator()
-            => ((IEnumerable<T>)Provider.Execute<T>(Expression))
+            => ((IEnumerable<T>)Provider.Execute(Expression))
             .GetEnumerator();
+
+        public override string ToString()
+            => Provider.GetQueryString(Expression);
 
         IEnumerator IEnumerable.GetEnumerator() 
             => GetEnumerator();

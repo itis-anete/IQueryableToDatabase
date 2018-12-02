@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Reflection;
-using System.Text;
 
 namespace UltimateDatabaseQueryable
 {
@@ -17,8 +16,7 @@ namespace UltimateDatabaseQueryable
         public DbEnumerator(DbDataReader dbDataReader)
         {
             this.dbDataReader = dbDataReader;
-            propertyInfos = typeof(T).GetProperties(
-                BindingFlags.Public | BindingFlags.Instance);
+            propertyInfos = typeof(T).GetProperties();
         }
 
         public T Current { get; private set; }

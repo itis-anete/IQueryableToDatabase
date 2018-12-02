@@ -1,4 +1,4 @@
-﻿using System;
+﻿using NUnitLite;
 
 namespace Tests
 {
@@ -6,7 +6,7 @@ namespace Tests
     {
         static void Main(string[] args)
         {
-            
+            new AutoRun().Execute(args);
         }
     }
 }

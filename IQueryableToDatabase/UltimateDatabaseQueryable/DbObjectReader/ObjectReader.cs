@@ -20,7 +20,8 @@ namespace UltimateDatabaseQueryable
             var enumerator = dbEnumerator;
             if (enumerator == null)
             {
-                throw new InvalidOperationException("DbDataReader cannot be enumerated more than once.");
+                throw new InvalidOperationException(
+                    "DbDataReader cannot be enumerated more than once.");
             }
             dbEnumerator = null;
             return enumerator;

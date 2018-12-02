@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -49,7 +48,7 @@ namespace UltimateDatabaseQueryable
 
         protected override Expression VisitBinary(BinaryExpression expression)
         {
-            sqlRequestBuilder.Append(" (");
+            sqlRequestBuilder.Append("(");
             Visit(expression.Left);
             HandleBinaryOperators(expression);
             Visit(expression.Right);
@@ -90,7 +89,7 @@ namespace UltimateDatabaseQueryable
         {
             sqlRequestBuilder.Append("select * from (");
             Visit(expression.Arguments[0]);
-            sqlRequestBuilder.Append(") as table where ");
+            sqlRequestBuilder.Append(") as T where ");
             var lambda = GetInnerExpressionFromQuote(expression.Arguments[1]);
             Visit(lambda.Body);
             return expression;
@@ -116,7 +115,10 @@ namespace UltimateDatabaseQueryable
                     sqlRequestBuilder.Append(" and ");
                     break;
                 case ExpressionType.Or:
-                    sqlRequestBuilder.Append(" or");
+                    sqlRequestBuilder.Append(" or ");
+                    break;
+                case ExpressionType.AndAlso:
+                    sqlRequestBuilder.Append(" and ");
                     break;
                 case ExpressionType.Equal:
                     sqlRequestBuilder.Append(" = ");
