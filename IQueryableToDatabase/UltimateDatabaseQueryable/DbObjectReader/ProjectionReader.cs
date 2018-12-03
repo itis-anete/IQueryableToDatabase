@@ -5,26 +5,25 @@ using System.Data.Common;
 
 namespace UltimateDatabaseQueryable
 {
-    public class ObjectReader<T> : IEnumerable<T>
-        where T : class, new()
+    public class ProjectionReader<T> : IEnumerable<T>
     {
-        private WhereDbEnumerator<T> dbEnumerator;
+        private SelectDbEnumerator<T> enumerator;
 
-        public ObjectReader(DbDataReader dbDataReader)
+        public ProjectionReader(DbDataReader reader, Func<ProjectionRow, T> projector)
         {
-            dbEnumerator = new WhereDbEnumerator<T>(dbDataReader);
+            enumerator = new SelectDbEnumerator<T>(reader, projector);
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            var enumerator = dbEnumerator;
-            if (enumerator == null)
+            var  e = enumerator;
+            if (e == null)
             {
                 throw new InvalidOperationException(
                     "DbDataReader cannot be enumerated more than once.");
             }
-            dbEnumerator = null;
-            return enumerator;
+            enumerator = null;
+            return e;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -29,7 +29,7 @@ namespace UltimateDatabaseQueryable
             if (expression.NodeType == ExpressionType.Constant)
                 return expression;
             var func = Expression.Lambda(expression).Compile();
-            return Expression.Constant(func.DynamicInvoke(null), expression.Type);
+            return Expression.Constant(func.DynamicInvoke(), expression.Type);
         }
     }
 }

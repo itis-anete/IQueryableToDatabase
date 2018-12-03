@@ -6,14 +6,14 @@ using System.Reflection;
 
 namespace UltimateDatabaseQueryable
 {
-    public class DbEnumerator<T> : IEnumerator<T>
+    public class WhereDbEnumerator<T> : IEnumerator<T>
         where T : class, new()
     {
         private readonly DbDataReader dbDataReader;
         private readonly PropertyInfo[] propertyInfos;
         private int[] propertyLookup;
 
-        public DbEnumerator(DbDataReader dbDataReader)
+        public WhereDbEnumerator(DbDataReader dbDataReader)
         {
             this.dbDataReader = dbDataReader;
             propertyInfos = typeof(T).GetProperties();

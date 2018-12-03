@@ -9,8 +9,10 @@ namespace UltimateDatabaseQueryable
     {
         public static Expression GetEvaluatedSubTree(Expression expression,
             Func<Expression, bool> evaluationPredicate)
-            => new SubTreeEvaluator(new Nominator(evaluationPredicate).Nominate(expression))
-            .EvaluateExpression(expression);
+        {
+            var candidates = new Nominator(evaluationPredicate).Nominate(expression);
+            return new SubTreeEvaluator(candidates).EvaluateExpression(expression);
+        }
 
         public static Expression GetEvaluatedSubTree(Expression expression)
             => GetEvaluatedSubTree(expression, CanBeEvaluatedLocally);

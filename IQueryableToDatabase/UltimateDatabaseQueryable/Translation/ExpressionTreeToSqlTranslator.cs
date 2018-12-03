@@ -7,17 +7,18 @@ namespace UltimateDatabaseQueryable
 {
     public class ExpressionTreeToSqlTranslator : ExpressionVisitor
     {
-        private readonly StringBuilder sqlRequestBuilder;
+        private StringBuilder sqlRequestBuilder;
+        private ParameterExpression row;
+        private ColumnProjection projection;
 
-        public ExpressionTreeToSqlTranslator()
+        public TranslationResult Translate(Expression expression)
         {
             sqlRequestBuilder = new StringBuilder();
-        }
-
-        public string Translate(Expression expression)
-        {
+            row = Expression.Parameter(typeof(ProjectionRow), "row");
             Visit(expression);
-            return sqlRequestBuilder.ToString();
+            return new TranslationResult(
+                sqlRequestBuilder.ToString(),
+                projection != null ? Expression.Lambda(projection.Selector, row) : null);
         }
 
         protected override Expression VisitMethodCall(MethodCallExpression expression)
@@ -97,7 +98,15 @@ namespace UltimateDatabaseQueryable
 
         private MethodCallExpression HandleSelectMethod(MethodCallExpression expression)
         {
-            throw new NotImplementedException();
+            var lambda = GetInnerExpressionFromQuote(expression.Arguments[1]);
+            var projection = new ColumnProjector().ProjectColumns(lambda.Body, row);
+            sqlRequestBuilder.Append("select ");
+            sqlRequestBuilder.Append(projection.Columns.Length > 0 ? projection.Columns : "*");
+            sqlRequestBuilder.Append(" from (");
+            Visit(expression.Arguments[0]);
+            sqlRequestBuilder.Append(") as T ");
+            this.projection = projection;
+            return expression;
         }
 
         private UnaryExpression HandleNotOperator(UnaryExpression expression)

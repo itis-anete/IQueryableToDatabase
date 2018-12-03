@@ -11,7 +11,7 @@ namespace UltimateDatabaseQueryable
 
         public IQueryable CreateQuery(Expression expression)
         {
-            Type elementType = TypeSystem.GetElementType(expression.Type);
+            var elementType = TypeSystem.GetElementType(expression.Type);
             return (IQueryable)Activator.CreateInstance(
                 typeof(UltimateQueryable<>).MakeGenericType(elementType), 
                 new object[] { expression, this });
