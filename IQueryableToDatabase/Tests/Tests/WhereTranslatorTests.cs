@@ -61,19 +61,5 @@ namespace Tests
                 paynes.ToString(),
                 "select * from (select * from MajorPayne) as T where (Song = 'BBBB')");
         }
-
-        [Test]
-        public void WhereWithMemberAccess()
-            => DbPreparator.GetRefilledDb(CreateWhereWithMemberAccess);
-
-        private void CreateWhereWithMemberAccess(SqlConnection sqlConnection)
-        {
-            var provider = new DbQueryProvider(sqlConnection);
-            var paynes = new UltimateQueryable<MajorPayne>(provider)
-                .Where(payne => payne.Song.Length >= 4);
-            Assert.AreEqual(
-                paynes.ToString(),
-                "");
-        }   
     }
 }

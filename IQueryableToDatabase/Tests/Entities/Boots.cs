@@ -15,7 +15,7 @@
         public Color Color { get; set; }
         public double Size { get; set; }
 
-        public override string ToString() => $"{Color} : {Size}";
+        public override string ToString() => $"[{Color} : {Size}]";
     }
 
     public enum Color

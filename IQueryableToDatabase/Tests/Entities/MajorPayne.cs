@@ -16,5 +16,7 @@
         public int Height { get; set; }
         public Boots Boots { get; set; }
         public string Song { get; set; }
+
+        public override string ToString() => $"{Height} : {Boots} : {Song}";
     }
 }

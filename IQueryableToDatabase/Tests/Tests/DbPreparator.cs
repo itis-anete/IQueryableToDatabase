@@ -13,6 +13,7 @@ namespace Tests
             InsertBobas();
             using (SqlConnection sqlConnection = new SqlConnection(AppSettings.LocalConnectionString))
             {
+                sqlConnection.Open();
                 tester(sqlConnection);
             }
         }
